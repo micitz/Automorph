@@ -1,0 +1,14 @@
+% This program helps select the appropriate parameters for each study area
+% It requires a "Profile Info Table" Excel sheet to be in the path. It
+% is faster and more convenient thant the original version
+%
+% Michael Itzkin, 5/22/2018
+%----------------------------------------------------------------------%
+
+% Load the Profile Info Table
+profile_info_table = readtable('Profile Info Table');
+
+% Find the rows for the current location
+curr_loc_rows = [];
+for i = 1:height(profile_info_table)
+    if strcmp(profile_info_table{i,1}, location(1:

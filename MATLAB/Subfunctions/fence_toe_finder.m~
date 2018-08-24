@@ -1,0 +1,27 @@
+% This script locates the position of the fenced dune toe. It first
+% checks that there is a fenced dune crest on the profile before
+% continuing. It then assigns the general, local, and lat/lon 
+% position of the fenced dune toe
+%
+% Michael Itzkin, 4/4/2018
+%-------------------------------------------------------------------------%
+
+if exist('fence_crest_index') && ~isempty(find(fence_crossings(:,1)==k)) && length(
+    % Make a copy of the current profile, and then replace the part between MHW
+    % and the fenced dune crest with a straight line
+    profile_copy = profiles(:,k,3);
+    linear_component = linspace(y_fence_crest, y_mhw,...
+        length(fence_crest_index:mhw_index));
+    profile_copy(fence_crest_index:mhw_index) = linear_component;
+
+    % Subtract the profile_copy from the profile and take the absolute values.
+    % Then identify where the greatest value is and set it as the fenced dune
+    % toe index
+    dists = abs(profiles(:,k,3) - profile_copy);
+    fence_toe_index = find(dists == nanmax(dists));
+
+    % Set the appropriate locations
+    [x_fence_toe, y_fence_toe, local_x_fence_toe, local_y_fence_toe,...
+        fence_toe_lon, fence_toe_lat] = set_locations(x_values,...
+        local_x_values, profiles, fence_toe_index, k, sp_loc);
+end
